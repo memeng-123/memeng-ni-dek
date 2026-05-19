@@ -11,14 +11,7 @@ interface NavbarProps {
 export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [active, setActive] = useState('#home');
 
   const navItems = [
     { label: 'Home', href: '#home' },
@@ -27,6 +20,26 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
     { label: 'Projects', href: '#projects' },
     { label: 'Contact', href: '#contact' },
   ];
+
+  // Scroll effect + active section detector
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+
+      navItems.forEach((item) => {
+        const section = document.querySelector(item.href);
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 120 && rect.bottom >= 120) {
+            setActive(item.href);
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -38,47 +51,76 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
+      initial={{ y: -120 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-strong shadow-card' : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled
+          ? 'backdrop-blur-xl bg-background/70 border-b border-white/10 shadow-lg'
+          : 'bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-4">
+      {/* Glow Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute w-[300px] h-[300px] bg-blue-400/10 blur-[120px] -top-20 -left-20" />
+        <div className="absolute w-[300px] h-[300px] bg-cyan-400/10 blur-[120px] -bottom-20 -right-20" />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex items-center justify-between h-16 md:h-20">
+
+          {/* LOGO */}
           <motion.a
             href="#home"
             onClick={(e) => {
               e.preventDefault();
               scrollToSection('#home');
             }}
-            className="font-display text-xl md:text-2xl font-bold text-gradient cursor-pointer"
-            whileHover={{ scale: 1.05 }}
+            className="relative font-display text-xl md:text-2xl font-bold text-gradient cursor-pointer"
+            whileHover={{ scale: 1.08 }}
           >
-            Varel's Portofolio
+            Varel's Portfolio
+
+            {/* Glow effect */}
+            <span className="absolute -inset-2 bg-blue-400/20 blur-xl opacity-0 hover:opacity-100 transition duration-500 rounded-full"></span>
           </motion.a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* DESKTOP */}
+          <div className="hidden md:flex items-center gap-8 relative">
+
             {navItems.map((item) => (
-              <motion.a
-                key={item.label}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.href);
-                }}
-                className="text-muted-foreground hover:text-foreground transition-colors font-medium cursor-pointer"
-                whileHover={{ y: -2 }}
-              >
-                {item.label}
-              </motion.a>
+              <div key={item.href} className="relative">
+                <motion.a
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.href);
+                  }}
+                  className={`relative font-medium transition ${
+                    active === item.href
+                      ? 'text-blue-400'
+                      : 'text-muted-foreground hover:text-white'
+                  }`}
+                  whileHover={{ y: -2 }}
+                >
+                  {item.label}
+                </motion.a>
+
+                {/* ACTIVE UNDERLINE */}
+                {active === item.href && (
+                  <motion.div
+                    layoutId="underline"
+                    className="absolute left-0 right-0 -bottom-2 h-[2px] bg-gradient-to-r from-blue-400 to-cyan-300 rounded-full"
+                  />
+                )}
+              </div>
             ))}
+
+            {/* THEME */}
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="rounded-full"
+              className="rounded-full relative overflow-hidden"
             >
               <AnimatePresence mode="wait">
                 {isDark ? (
@@ -104,50 +146,49 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* MOBILE */}
           <div className="flex items-center gap-2 md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="rounded-full"
-            >
-              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            <Button variant="ghost" size="icon" onClick={toggleTheme}>
+              {isDark ? <Sun /> : <Moon />}
             </Button>
+
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isMobileMenuOpen ? <X /> : <Menu />}
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass-strong border-t border-border"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden backdrop-blur-xl bg-background/80 border-t border-white/10"
           >
-            <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+            <div className="flex flex-col items-center py-6 gap-6">
+
               {navItems.map((item) => (
-                <a
-                  key={item.label}
+                <motion.a
+                  key={item.href}
                   href={item.href}
                   onClick={(e) => {
                     e.preventDefault();
                     scrollToSection(item.href);
                   }}
-                  className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2"
+                  className="text-lg font-medium text-muted-foreground hover:text-blue-400 transition"
+                  whileHover={{ scale: 1.1 }}
                 >
                   {item.label}
-                </a>
+                </motion.a>
               ))}
+
             </div>
           </motion.div>
         )}

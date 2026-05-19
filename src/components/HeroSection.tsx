@@ -4,15 +4,24 @@ import { Button } from '@/components/ui/button';
 import ThreeScene from './ThreeScene';
 
 export default function HeroSection() {
-  const scrollToAbout = () => {
-    const element = document.querySelector('#about');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+
+  // 🔥 SCROLL FUNCTION AMAN (NO ERROR TS)
+  const scrollToSection = (id: string) => {
+    const el = document.querySelector(id);
+
+    if (el instanceof HTMLElement) {
+      window.scrollTo({
+        top: el.offsetTop - 80, // ⬅️ offset biar gak ketutup navbar
+        behavior: 'smooth',
+      });
     }
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero"
+    >
       <ThreeScene />
 
       <div className="container mx-auto px-4 relative z-10">
@@ -25,10 +34,8 @@ export default function HeroSection() {
             transition={{ duration: 0.8 }}
             className="flex justify-center relative"
           >
-            {/* BLUR BACKGROUND EFFECT */}
             <div className="absolute w-72 h-72 bg-primary/30 rounded-full blur-3xl animate-pulse"></div>
 
-            {/* FOTO */}
             <motion.img
               src="/fotomemeng.jpg"
               alt="Profile"
@@ -73,6 +80,7 @@ export default function HeroSection() {
               yang memiliki minat besar dalam dunia teknologi, 
               khususnya dalam bidang pemrograman dan pengembangan web. 
             </motion.p>
+
             {/* BUTTON */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -83,10 +91,7 @@ export default function HeroSection() {
               <Button
                 size="lg"
                 className="rounded-full px-8 shadow-glow hover:scale-105 transition"
-                onClick={() => {
-                  const el = document.querySelector('#projects');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
+                onClick={() => scrollToSection('#projects')}
               >
                 🚀 Lihat Project
               </Button>
@@ -95,10 +100,7 @@ export default function HeroSection() {
                 variant="outline"
                 size="lg"
                 className="rounded-full px-8 hover:scale-105 transition"
-                onClick={() => {
-                  const el = document.querySelector('#contact');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
+                onClick={() => scrollToSection('#contact')}
               >
                 📩 Hubungi Saya
               </Button>
@@ -114,6 +116,7 @@ export default function HeroSection() {
               <a
                 href="https://github.com/memeng-123/memeng-ni-dek.git"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="p-3 rounded-full glass hover:shadow-glow hover:-translate-y-1 transition"
               >
                 <Github />
@@ -122,6 +125,7 @@ export default function HeroSection() {
               <a
                 href="https://www.youtube.com/"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="p-3 rounded-full glass hover:shadow-glow hover:-translate-y-1 transition"
               >
                 <Youtube />
@@ -131,9 +135,9 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* SCROLL */}
+      {/* SCROLL DOWN */}
       <motion.button
-        onClick={scrollToAbout}
+        onClick={() => scrollToSection('#about')}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 p-3 rounded-full glass animate-bounce"
         whileHover={{ scale: 1.2 }}
       >

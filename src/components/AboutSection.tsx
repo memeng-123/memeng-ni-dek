@@ -12,7 +12,9 @@ export default function AboutSection() {
         "Saya adalah seorang pelajar dari MAN 1 Banda Aceh yang memiliki minat besar dalam dunia teknologi dan pengembangan web modern.",
       emoji: "👨‍💻",
       quote: "Bukan tentang seberapa cepat kamu mulai, tapi seberapa konsisten kamu bertahan.",
-      sub: "Semua orang bisa mulai, tapi tidak semua bisa bertahan di prosesnya."
+      sub: "Semua orang bisa mulai, tapi tidak semua bisa bertahan di prosesnya.",
+      birth: "1 September 2010",
+      place: "Banda Aceh"
     },
     {
       title: "Perjalanan",
@@ -54,7 +56,7 @@ export default function AboutSection() {
   return (
     <section id="about" className="py-20 md:py-32 relative overflow-hidden">
 
-      {/* BACKGROUND BLUR */}
+      {/* BACKGROUND */}
       <div className="absolute w-[400px] h-[400px] bg-blue-400/20 blur-[120px] top-[-100px] left-[-100px]" />
       <div className="absolute w-[400px] h-[400px] bg-cyan-300/20 blur-[120px] bottom-[-100px] right-[-100px]" />
 
@@ -110,12 +112,27 @@ export default function AboutSection() {
                 transition={{ duration: 0.5 }}
                 className="p-8 rounded-2xl glass text-center shadow-card backdrop-blur-xl border border-white/20"
               >
+                {/* EMOJI */}
                 <div className="text-6xl mb-4">{slides[index].emoji}</div>
 
-                <h3 className="text-2xl font-bold mb-3 text-gradient">
+                {/* TITLE */}
+                <h3 className="text-2xl font-bold mb-1 text-gradient">
                   {slides[index].title}
                 </h3>
 
+                {/* BIRTH INFO */}
+                {slides[index].birth && (
+                  <div className="flex flex-col items-center mb-3 text-sm">
+                    <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300">
+                      🎂 {slides[index].birth}
+                    </span>
+                    <span className="text-muted-foreground text-xs mt-1">
+                      📍 {slides[index].place}
+                    </span>
+                  </div>
+                )}
+
+                {/* CONTENT */}
                 <p className="text-muted-foreground leading-relaxed">
                   {slides[index].content}
                 </p>
