@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Youtube, Instagram } from 'lucide-react';
+import { ArrowDown, Github, Youtube } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThreeScene from './ThreeScene';
 
@@ -12,108 +12,130 @@ export default function HeroSection() {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
       <ThreeScene />
-      
+
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+
+          {/* ================= FOTO PROFILE ================= */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -80 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
+            className="flex justify-center relative"
           >
-            <motion.span 
+            {/* BLUR BACKGROUND EFFECT */}
+            <div className="absolute w-72 h-72 bg-primary/30 rounded-full blur-3xl animate-pulse"></div>
+
+            {/* FOTO */}
+            <motion.img
+              src="/fotomemeng.jpg"
+              alt="Profile"
+              className="w-64 h-64 object-cover rounded-full border-4 border-white shadow-2xl relative z-10"
+              whileHover={{ scale: 1.05 }}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            />
+          </motion.div>
+
+          {/* ================= TEXT ================= */}
+          <div className="text-center md:text-left">
+
+            <motion.span
               className="inline-block px-4 py-2 rounded-full glass text-sm font-medium text-primary mb-6"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              👋 Selamat datang di portfolio saya
+              🚀 Welcome To My Portfolio
             </motion.span>
-          </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
-          >
-            Fullstack Developer
-            <br />
-            <span className="text-gradient">&amp; Content Creator</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
-          >
-            Saya membangun aplikasi web yang indah dan fungsional, 
-            serta membagikan pengetahuan melalui konten yang inspiratif.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-          >
-            <Button 
-              size="lg" 
-              className="rounded-full px-8 shadow-glow"
-              onClick={() => {
-                const element = document.querySelector('#projects');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }}
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-4xl md:text-6xl font-bold mb-6 leading-tight"
             >
-              Lihat Projects
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="rounded-full px-8"
-              onClick={() => {
-                const element = document.querySelector('#contact');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Hubungi Saya
-            </Button>
-          </motion.div>
+              Hello, I'm <br />
+              <span className="bg-gradient-to-r from-primary to-purple-400 text-transparent bg-clip-text">
+                Cut Sultan Varel
+              </span>
+            </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex items-center justify-center gap-6"
-          >
-            {[
-              { icon: Github, href: '#', label: 'GitHub' },
-              { icon: Linkedin, href: '#', label: 'LinkedIn' },
-              { icon: Youtube, href: '#', label: 'YouTube' },
-              { icon: Instagram, href: '#', label: 'Instagram' },
-            ].map((social) => (
-              <motion.a
-                key={social.label}
-                href={social.href}
-                className="p-3 rounded-full glass hover:shadow-glow transition-all duration-300"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label={social.label}
+            <motion.p
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-lg text-muted-foreground mb-8 max-w-lg"
+            >
+              Seorang pelajar MAN 1 Banda Aceh 
+              yang memiliki minat besar dalam dunia teknologi, 
+              khususnya dalam bidang pemrograman dan pengembangan web. 
+            </motion.p>
+            {/* BUTTON */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="flex flex-col sm:flex-row gap-4 mb-8"
+            >
+              <Button
+                size="lg"
+                className="rounded-full px-8 shadow-glow hover:scale-105 transition"
+                onClick={() => {
+                  const el = document.querySelector('#projects');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                <social.icon className="h-5 w-5 text-foreground" />
-              </motion.a>
-            ))}
-          </motion.div>
+                🚀 Lihat Project
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8 hover:scale-105 transition"
+                onClick={() => {
+                  const el = document.querySelector('#contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                📩 Hubungi Saya
+              </Button>
+            </motion.div>
+
+            {/* SOCIAL */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9 }}
+              className="flex gap-4 justify-center md:justify-start"
+            >
+              <a
+                href="https://github.com/memeng-123/memeng-ni-dek.git"
+                target="_blank"
+                className="p-3 rounded-full glass hover:shadow-glow hover:-translate-y-1 transition"
+              >
+                <Github />
+              </a>
+
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                className="p-3 rounded-full glass hover:shadow-glow hover:-translate-y-1 transition"
+              >
+                <Youtube />
+              </a>
+            </motion.div>
+          </div>
         </div>
       </div>
 
+      {/* SCROLL */}
       <motion.button
         onClick={scrollToAbout}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 p-3 rounded-full glass animate-float cursor-pointer"
-        whileHover={{ scale: 1.1 }}
-        aria-label="Scroll to About"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 p-3 rounded-full glass animate-bounce"
+        whileHover={{ scale: 1.2 }}
       >
         <ArrowDown className="h-5 w-5 text-primary" />
       </motion.button>
