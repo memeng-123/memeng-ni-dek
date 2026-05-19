@@ -1,49 +1,50 @@
 import { motion } from 'framer-motion';
 
-const skills = {
-  frontend: [
-    { name: 'React', level: 95 },
-    { name: 'TypeScript', level: 90 },
-    { name: 'Next.js', level: 88 },
-    { name: 'Tailwind CSS', level: 95 },
-    { name: 'Vue.js', level: 75 },
+const subjects = {
+  wajib: [
+    { name: 'Matematika', level: 90 },
+    { name: 'Bahasa Indonesia', level: 85 },
+    { name: 'Bahasa Inggris', level: 88 },
+    { name: 'PPKn', level: 80 },
+    // { name: 'Sejarah', level: 82 },
   ],
-  backend: [
-    { name: 'Node.js', level: 90 },
-    { name: 'Python', level: 85 },
-    { name: 'PostgreSQL', level: 88 },
-    { name: 'MongoDB', level: 82 },
-    { name: 'GraphQL', level: 78 },
+  sains: [
+    { name: 'Fisika', level: 87 },
+    { name: 'Kimia', level: 84 },
+    { name: 'Biologi', level: 86 },
+    { name: 'Informatika', level: 92 },
   ],
-  tools: [
-    { name: 'Git', level: 95 },
-    { name: 'Docker', level: 80 },
-    { name: 'AWS', level: 75 },
-    { name: 'Figma', level: 85 },
-    { name: 'CI/CD', level: 82 },
+  lainnya: [
+    { name: 'PJOK', level: 95 },
+    { name: 'Seni Budaya', level: 78 },
+    { name: 'Bahasa Arab', level: 83 },
+    { name: 'Prakarya', level: 80 },
   ],
 };
 
-function SkillBar({ name, level, delay }: { name: string; level: number; delay: number }) {
+function SubjectBar({ name, level, delay }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, x: -30 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className="space-y-2"
+      className="space-y-2 group"
     >
       <div className="flex justify-between items-center">
-        <span className="font-medium">{name}</span>
+        <span className="font-medium group-hover:text-primary transition">
+          {name}
+        </span>
         <span className="text-sm text-muted-foreground">{level}%</span>
       </div>
+
       <div className="h-2 bg-muted rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: delay + 0.2, ease: 'easeOut' }}
-          className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
+          transition={{ duration: 1, delay: delay + 0.2 }}
+          className="h-full rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 shadow-glow"
         />
       </div>
     </motion.div>
@@ -52,85 +53,73 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
 
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-20 md:py-32">
-      <div className="container mx-auto px-4">
+    <section id="skills" className="py-24 relative overflow-hidden">
+
+      {/* BACKGROUND EFFECT */}
+      <div className="absolute w-[500px] h-[500px] bg-blue-400/20 blur-[150px] top-[-150px] left-[-150px]" />
+      <div className="absolute w-[500px] h-[500px] bg-cyan-300/20 blur-[150px] bottom-[-150px] right-[-150px]" />
+
+      <div className="container mx-auto px-4 relative z-10">
+
+        {/* TITLE */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <span className="text-primary font-medium mb-2 block">Keahlian</span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
-            Skills &amp; Teknologi
+          <span className="text-primary font-medium mb-2 block">
+            Mata Pelajaran
+          </span>
+          <h2 className="text-4xl md:text-6xl font-bold mb-4 text-gradient">
+            School Subjects
           </h2>
-          <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Setiap pelajaran adalah bagian dari perjalanan menuju masa depan yang lebih besar.
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Frontend */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="p-6 glass rounded-2xl shadow-card hover:shadow-card-hover transition-shadow"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">🎨</span>
-              </div>
-              <h3 className="font-display text-xl font-bold">Frontend</h3>
-            </div>
-            <div className="space-y-4">
-              {skills.frontend.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
-              ))}
-            </div>
-          </motion.div>
+        {/* GRID */}
+        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
 
-          {/* Backend */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="p-6 glass rounded-2xl shadow-card hover:shadow-card-hover transition-shadow"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">⚙️</span>
-              </div>
-              <h3 className="font-display text-xl font-bold">Backend</h3>
-            </div>
-            <div className="space-y-4">
-              {skills.backend.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
-              ))}
-            </div>
-          </motion.div>
+          {/* CARD */}
+          {[
+            { title: "Pelajaran Wajib", data: subjects.wajib },
+            { title: "Sains & Teknologi", data: subjects.sains },
+            { title: "Lainnya", data: subjects.lainnya },
+          ].map((section, i) => (
+            <motion.div
+              key={section.title}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.2 }}
+              className="relative p-6 rounded-3xl glass shadow-card hover:shadow-glow transition-all duration-500 group"
+            >
+              {/* GLOW HOVER */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-cyan-300/10 opacity-0 group-hover:opacity-100 transition rounded-3xl"></div>
 
-          {/* Tools */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="p-6 glass rounded-2xl shadow-card hover:shadow-card-hover transition-shadow"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">🛠️</span>
+              {/* ICON BUKU */}
+              <div className="flex items-center gap-3 mb-6 relative z-10">
+                <div className="p-3 rounded-xl bg-blue-100 dark:bg-blue-900/30">
+                  <span className="text-3xl">📚</span>
+                </div>
+                <h3 className="text-xl font-bold">{section.title}</h3>
               </div>
-              <h3 className="font-display text-xl font-bold">Tools &amp; Lainnya</h3>
-            </div>
-            <div className="space-y-4">
-              {skills.tools.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
-              ))}
-            </div>
-          </motion.div>
+
+              {/* LIST MAPEL */}
+              <div className="space-y-5 relative z-10">
+                {section.data.map((sub, index) => (
+                  <SubjectBar
+                    key={sub.name}
+                    {...sub}
+                    delay={index * 0.1}
+                  />
+                ))}
+              </div>
+
+              {/* FLOATING LIGHT */}
+              <div className="absolute -top-10 -right-10 w-24 h-24 bg-blue-400/20 blur-2xl rounded-full"></div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
